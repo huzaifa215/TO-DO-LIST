@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_list/App_Sign_in/Sign_in_button.dart';
+import 'package:to_do_list/Common_widgets/custom_raised_button.dart';
 
 class SignInPage extends StatelessWidget {
   @override
@@ -33,18 +35,23 @@ Widget BuiltCntext() {
         SizedBox(
           height: 8.0,
         ),
-        RaisedButton(
-          child: Text(
-            "Sign In with Google",
-            style: TextStyle(color: Colors.black87, fontSize: 15.0),
-          ),
+        SignInButton(
+          text: "Sign In with Google",
+          textColor: Colors.black87,
           color: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          ),
-          onPressed: () {},
+          onpressed: (){},
         ),
+        // CustomRaisedButton(
+        //   child: Text(
+        //     "Sign In with Facebook",
+        //     style: TextStyle(color: Colors.black87, fontSize: 15.0),
+        //   ),
+        //   color: Colors.blue,
+        //   radius: 4.0,
+        //   OnPressed: () {},
+        // )
       ],
     ),
   );
 }
+
