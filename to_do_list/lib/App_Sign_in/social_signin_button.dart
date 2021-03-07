@@ -3,10 +3,10 @@ import 'package:to_do_list/Common_widgets/custom_raised_button.dart';
 
 class SocialSignInButton extends CustomRaisedButton {
   SocialSignInButton({
-    String text,
-    Color color,
+    @required String text,
+     Color color,
     Color textColor,
-    String image,
+    @required String image,//@ required show that it should be include in it
     VoidCallback onpressed,
   }) : super(
           child: Row(
