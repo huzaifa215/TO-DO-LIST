@@ -39,19 +39,45 @@ Widget BuiltCntext() {
           text: "Sign In with Google",
           textColor: Colors.black87,
           color: Colors.white,
-          onpressed: (){},
+          onpressed: () {},
         ),
-        // CustomRaisedButton(
-        //   child: Text(
-        //     "Sign In with Facebook",
-        //     style: TextStyle(color: Colors.black87, fontSize: 15.0),
-        //   ),
-        //   color: Colors.blue,
-        //   radius: 4.0,
-        //   OnPressed: () {},
-        // )
+        SizedBox(
+          height: 8.0,
+        ),
+        SignInButton(
+          text: "Sign In with Facebook",
+          textColor: Colors.white,
+          color: Color(0xFF334D92), // constructor passing value
+          onpressed: () {},
+        ),
+        SizedBox(
+          height: 8.0,
+        ),
+        SignInButton(
+          text: "Sign In with Email",
+          textColor: Colors.white,
+          color: Colors.teal[700], // constructor passing value
+          onpressed: () {},
+        ),
+        SizedBox(
+          height: 8.0,
+        ),
+        Text(
+          "OR",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 14.0, color: Colors.black87),
+        ),
+        SizedBox(
+          height: 8.0,
+        ),
+        SignInButton(
+          text: "Go Anonymous",
+          textColor: Colors.black87,
+          color: Colors.lime[300], // constructor passing value
+          onpressed: () {},
+        ),
+
       ],
     ),
   );
 }
-
