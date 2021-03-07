@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'App_Sign_in/sign_in_page.dart';
-void main(){
+
+void main() {
   runApp(MyApp());
 }
 
@@ -17,4 +18,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

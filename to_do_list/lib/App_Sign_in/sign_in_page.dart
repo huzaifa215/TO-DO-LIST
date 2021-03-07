@@ -49,15 +49,14 @@ Widget BuiltCntext() {
         SocialSignInButton(
           text: "Sign In with Facebook",
           textColor: Colors.white,
-          color: Color(0xFF334D92), // constructor passing value
+          color: Color(0xFF334D92),
+          // constructor passing value
           onpressed: () {},
           image: "images/facebook-logo.png",
-
         ),
         SizedBox(
           height: 8.0,
         ),
-
         SignInButton(
           text: "Sign In with Email",
           textColor: Colors.white,
@@ -81,7 +80,6 @@ Widget BuiltCntext() {
           color: Colors.lime[300], // constructor passing value
           onpressed: () {},
         ),
-
       ],
     ),
   );
