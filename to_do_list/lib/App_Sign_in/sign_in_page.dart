@@ -33,7 +33,7 @@ Widget BuiltCntext() {
           ),
         ),
         SizedBox(
-          height: 8.0,
+          height: 48.0,
         ),
         SignInButton(
           text: "Sign In with Google",
