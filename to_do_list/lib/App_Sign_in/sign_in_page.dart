@@ -5,10 +5,13 @@ import 'package:to_do_list/App_Sign_in/social_signin_button.dart';
 import 'package:to_do_list/Common_widgets/custom_raised_button.dart';
 
 class SignInPage extends StatelessWidget {
-
-  Future<void> _signInAnonymously() async{
-    final userCredential =await FirebaseAuth.instance.signInAnonymously();
-    print('${userCredential.user.uid}');
+  Future<void> _signInAnonymously() async {
+    try {
+      final userCredential = await FirebaseAuth.instance.signInAnonymously();
+      print('${userCredential.user.uid}');
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -23,7 +26,6 @@ class SignInPage extends StatelessWidget {
       backgroundColor: Colors.grey[200],
     );
   }
-
 
   Widget BuiltCntext() {
     return Padding(
