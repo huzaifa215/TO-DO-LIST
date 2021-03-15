@@ -6,10 +6,14 @@ import 'file:///D:/FlutterApp/TO-DO-LIST/to_do_list/lib/App_Sign_in/SignIn/Sign_
 import 'package:to_do_list/Common_widgets/custom_raised_button.dart';
 
 class SignInPage extends StatelessWidget {
+  const SignInPage({Key key, @required this.onSignIn}) : super(key: key);
+  final void Function(User) onSignIn;
+
+
   Future<void> _signInAnonymously() async {
     try {
       final userCredential = await FirebaseAuth.instance.signInAnonymously();
-      print('${userCredential.user.uid}');
+      onSignIn(userCredential.user);
     } catch (e) {
       print(e.toString());
     }
