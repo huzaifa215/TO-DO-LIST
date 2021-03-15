@@ -16,7 +16,7 @@ class _LanddindgPageState extends State<LanddindgPage> {
   void _updateUser(User user){
    setState(() {
      _user=user;
-   });;
+   });
   }
   @override
   Widget build(BuildContext context) {
@@ -25,6 +25,8 @@ class _LanddindgPageState extends State<LanddindgPage> {
         onSignIn:_updateUser,
       );
     }
-    return HomePage();// Temporary placeholder for homepage
+    return HomePage(
+      OnSignOut: ()=> _updateUser(null),
+    );// Temporary placeholder for homepage
   }
 }
