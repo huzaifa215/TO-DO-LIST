@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:to_do_list/App_Sign_in/Sign_in_button.dart';
-import 'package:to_do_list/App_Sign_in/social_signin_button.dart';
+import 'package:to_do_list/App_Sign_in/SignIn/social_signin_button.dart';
+import 'file:///D:/FlutterApp/TO-DO-LIST/to_do_list/lib/App_Sign_in/SignIn/Sign_in_button.dart';
+
 import 'package:to_do_list/Common_widgets/custom_raised_button.dart';
 
 class SignInPage extends StatelessWidget {
