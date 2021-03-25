@@ -14,11 +14,11 @@ class LanddindgPage extends StatefulWidget {
 
 class _LanddindgPageState extends State<LanddindgPage> {
   // cehck user here
-  User _user;
+  User _user;// current user details status
 
   @override
   void _updateUser(User user) {
-    setState(() {
+    setState(() {// setstate is used here because it is the parent of home and sign up it automatically update the both pages
       _user = user;
     });
   }
