@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.indigo,
       ),
       home: LanddindgPage(
-        auth: Auth(),
+        auth: Auth(),// for firebase authentication
       ),
     );
   }

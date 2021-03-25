@@ -18,9 +18,17 @@ class _LanddindgPageState extends State<LanddindgPage> {
 
   @override
   void _updateUser(User user) {
-    setState(() {// setstate is used here because it is the parent of home and sign up it automatically update the both pages
-      _user = user;
-    });
+    try {
+      setState(() {
+        // setstate is used here because it is the parent of (home and sign up)
+        // child widget it automatically update the both
+        // pages and pass date from here to all the child widgets
+        // the all the child rebuilt them automatically only by calling the setstate method in the parent 
+        _user = user;
+      });
+    } catch (e, s) {
+      print(s);
+    }
   }
 
   // check the user login or not
