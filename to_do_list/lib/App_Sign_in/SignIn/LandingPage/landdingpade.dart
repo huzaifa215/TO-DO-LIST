@@ -34,12 +34,13 @@ class _LanddindgPageState extends State<LanddindgPage> {
   // check the user login or not
   void initState() {
     super.initState();
-    widget.auth.authStateChanges().listen((user) {
-      print('Uid :${user?.uid}');
-      // the question mark is used kion keh agr exception ai tu ye chale ga nhi ruk kr khatam kion keh is ke pas uid nhi ho ge 
+    // widget.auth.authStateChanges().listen((user) {
+    //   print('Uid :${user?.uid}');
+      // the question mark is used kion keh agr exception ai tu ye chale ga nhi ruk kr khatam kion keh is ke pas uid nhi ho ge
       // tu is ke lia
       // hame ne ? ye lagaya keh ai tu ignore or na ai tu chale
-    });
+    //});
+     
     _updateUser(widget.auth.currentUser);
   }
 
