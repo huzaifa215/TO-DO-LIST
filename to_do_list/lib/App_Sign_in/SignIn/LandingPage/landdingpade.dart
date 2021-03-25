@@ -23,7 +23,7 @@ class _LanddindgPageState extends State<LanddindgPage> {
         // setstate is used here because it is the parent of (home and sign up)
         // child widget it automatically update the both
         // pages and pass date from here to all the child widgets
-        // the all the child rebuilt them automatically only by calling the setstate method in the parent 
+        // the all the child rebuilt them automatically only by calling the set state method in the parent
         _user = user;
       });
     } catch (e, s) {
@@ -34,6 +34,12 @@ class _LanddindgPageState extends State<LanddindgPage> {
   // check the user login or not
   void initState() {
     super.initState();
+    widget.auth.authStateChanges().listen((user) {
+      print('Uid :${user?.uid}');
+      // the question mark is used kion keh agr exception ai tu ye chale ga nhi ruk kr khatam kion keh is ke pas uid nhi ho ge 
+      // tu is ke lia
+      // hame ne ? ye lagaya keh ai tu ignore or na ai tu chale
+    });
     _updateUser(widget.auth.currentUser);
   }
 
