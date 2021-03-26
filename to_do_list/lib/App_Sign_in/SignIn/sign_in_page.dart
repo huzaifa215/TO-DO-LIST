@@ -6,7 +6,7 @@ import 'package:to_do_list/Services/Auth.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({Key key,@required this.auth}) : super(key: key);
-  // due to stream we donot need firebase and no call back inorder to sign in anosmusly
+  // due to stream we donot need  no call back inorder to sign in anosmusly
  // final void Function(User) onSignIn;
 
   final AuthBase auth;
