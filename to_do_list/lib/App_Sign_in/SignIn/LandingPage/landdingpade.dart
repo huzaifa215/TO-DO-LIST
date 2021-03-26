@@ -8,13 +8,14 @@ class LanddindgPage extends StatefulWidget {
   final AuthBase auth;
 
   const LanddindgPage({Key key, this.auth}) : super(key: key);
+
   @override
   _LanddindgPageState createState() => _LanddindgPageState();
 }
 
 class _LanddindgPageState extends State<LanddindgPage> {
   // cehck user here
-  User _user;// current user details status
+  User _user; // current user details status page status
 
   @override
   void _updateUser(User user) {
@@ -36,25 +37,58 @@ class _LanddindgPageState extends State<LanddindgPage> {
     super.initState();
     // widget.auth.authStateChanges().listen((user) {
     //   print('Uid :${user?.uid}');
-      // the question mark is used kion keh agr exception ai tu ye chale ga nhi ruk kr khatam kion keh is ke pas uid nhi ho ge
-      // tu is ke lia
-      // hame ne ? ye lagaya keh ai tu ignore or na ai tu chale
+    // the question mark is used kion keh agr exception ai tu ye chale ga nhi ruk kr khatam kion keh is ke pas uid nhi ho ge
+    // tu is ke lia
+    // hame ne ? ye lagaya keh ai tu ignore or na ai tu chale
     //});
-     
+
     _updateUser(widget.auth.currentUser);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_user == null) {
-      return SignInPage(
-        auth:widget.auth,
-        onSignIn: _updateUser,
-      );
-    }
-    return HomePage(
-      auth:widget.auth,
-      OnSignOut: () => _updateUser(null),
-    ); // Temporary placeholder for homepage
+    // stream are sources for asyncronous data 
+    return StreamBuilder<User>// that the steam will deals with users
+      (
+      //initialData: widget.auth.authStateChanges(),// inital data optional if we pass the intial data no need to check the connection
+      stream: widget.auth.authStateChanges(),
+      builder: (context, snapshot) {
+        // snapshot that hold the data from the stream
+        // check connection state
+
+        // any one doumentation
+        if (snapshot.connectionState == ConnectionState.active) {
+          //
+          final User user = snapshot.data;
+          if (user == null) {
+            return SignInPage(
+              auth: widget.auth,
+              onSignIn: _updateUser,
+            );
+          }
+          return HomePage(
+            auth: widget.auth,
+            OnSignOut: () => _updateUser(null),
+          );
+        }
+        return Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
   }
+  // previous state
+//   if (_user == null) {
+//     return SignInPage(
+//       auth:widget.auth,
+//       onSignIn: _updateUser,
+//     );
+//   }
+//   return HomePage(
+//     auth:widget.auth,
+//     OnSignOut: () => _updateUser(null),
+//   ); // Temporary placeholder for homepage
+// }
 }
