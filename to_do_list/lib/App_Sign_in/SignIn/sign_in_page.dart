@@ -1,20 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/social_signin_button.dart';
 import 'file:///D:/FlutterApp/TO-DO-LIST/to_do_list/lib/App_Sign_in/SignIn/Sign_in_button.dart';
 import 'package:to_do_list/Services/Auth.dart';
 
 class SignInPage extends StatelessWidget {
-  const SignInPage({Key key,@required this.auth, @required this.onSignIn}) : super(key: key);
-  final void Function(User) onSignIn;
+  const SignInPage({Key key,@required this.auth}) : super(key: key);
+  // due to stream we donot need firebase and no call back inorder to sign in anosmusly
+ // final void Function(User) onSignIn;
 
   final AuthBase auth;
 
 
   Future<void> _signInAnonymously() async {
     try {
-      final user = await auth.signInAnonymously();
-      onSignIn(user);
+      await auth.signInAnonymously();
+     // onSignIn(user);
     } catch (e) {
       print(e.toString());
     }
