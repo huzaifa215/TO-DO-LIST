@@ -67,10 +67,12 @@ class _LanddindgPageState extends State<LanddindgPage> {
              // onSignIn: _updateUser,
             );
           }
-          return HomePage(
-            auth: widget.auth,
-           // OnSignOut: () => _updateUser(null),
-          );
+          else {
+            return HomePage(
+              auth: widget.auth,
+              // OnSignOut: () => _updateUser(null),
+            );
+          }
         }
         return Scaffold(
           body: Center(
