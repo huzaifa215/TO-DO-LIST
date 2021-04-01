@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:to_do_list/App_Sign_in/SignIn/homepage.dart';
 
 abstract class AuthBase {
   // only declare here
@@ -35,8 +36,8 @@ class Auth implements AuthBase {
   // send that token to firebase to store ,
   // the firebase than the user
   @override
-  Future<User> signInWithGoogle() async {
-    final googleSignIn = GoogleSignIn();
+  Future<User> signInWithGoogle() async  {
+    final  googleSignIn = GoogleSignIn();
     final googleUser = await googleSignIn.signIn(); // allow the user and get the user
     if (googleUser != null) {
       // get the token from that we can proceed
@@ -47,8 +48,10 @@ class Auth implements AuthBase {
             GoogleAuthProvider.credential(
                 idToken: googleAuht.idToken,
                 accessToken: googleAuht.accessToken));
-       
+
         return userCredentioal.user;
+
+
       } else {
         throw FirebaseAuthException(
             code: "ERROR_MISSING_GOOGLE_ID_TOKEN",
