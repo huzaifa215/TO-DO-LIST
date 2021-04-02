@@ -12,7 +12,7 @@ class SignInPage extends StatelessWidget {
 
   final AuthBase auth;
 
-
+// SignIn Anonymously
   Future<void> _signInAnonymously() async {
     try {
       await auth.signInAnonymously();
@@ -23,9 +23,20 @@ class SignInPage extends StatelessWidget {
     }
   }
 
+// google
   Future<void> _signInWithGoogle() async {
     try {
       await auth.signInWithGoogle();
+      // onSignIn(user);
+      return HomePage();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+// facebook
+  Future<void> _signInWithFacebook() async {
+    try {
+      await auth.signInFacebook();
       // onSignIn(user);
       return HomePage();
     } catch (e) {
@@ -80,7 +91,7 @@ class SignInPage extends StatelessWidget {
             textColor: Colors.white,
             color: Color(0xFF334D92),
             // constructor passing value
-            onpressed: () {},
+            onpressed: _signInWithFacebook,
             image: "images/facebook-logo.png",
           ),
           SizedBox(
