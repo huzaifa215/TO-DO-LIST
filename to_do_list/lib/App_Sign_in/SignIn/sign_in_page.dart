@@ -119,6 +119,17 @@ void _signInWithEmail(BuildContext context){
           SizedBox(
             height: 8.0,
           ),
+          SocialSignInButton(
+            text: "Sign In with VK.com",
+            textColor: Colors.white,
+            color: Color(0xFF334D92),
+            // constructor passing value
+            onpressed: (){},
+            image: "images/vk-logo.png",
+          ),
+          SizedBox(
+            height: 8.0,
+          ),
           Text(
             "OR",
             textAlign: TextAlign.center,
@@ -133,6 +144,7 @@ void _signInWithEmail(BuildContext context){
             color: Colors.lime[300], // constructor passing value
             onpressed: _signInAnonymously,
           ),
+
         ],
       ),
     );

@@ -125,6 +125,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         height: 8.0,
       ),
       FormSubmitButton(
+        // do the setstate to doe the logic formation
         text: primarytext,
         onpressed: _submit,
       ),

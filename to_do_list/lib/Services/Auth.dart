@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+import 'package:flutter_vk_sdk/vk_scope.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/homepage.dart';
+import 'package:flutter_vk_sdk/flutter_vk_sdk.dart';
 
 abstract class AuthBase {
+
   // only declare here
   User get currentUser;
 
@@ -24,6 +27,8 @@ abstract class AuthBase {
 }
 
 class Auth implements AuthBase {
+
+
   // wrapper for firebase AUTH
   final _firebaseAuth = FirebaseAuth.instance;
 
@@ -120,6 +125,12 @@ class Auth implements AuthBase {
     final usercredentials = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
     return usercredentials.user;
+  }
+
+  // Login with VK
+  Future<User> VKlogin() async{
+    
+
   }
 
   @override
