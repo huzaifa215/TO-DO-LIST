@@ -15,8 +15,9 @@ class FormSubmitButton extends CustomRaisedButton {
             ),
           ),
           height: 44.0,
+          width: 300,
           color: Colors.indigo,
-          radius: 5.0,
+          radius: 10.0,
           OnPressed: onpressed,
         );
 }

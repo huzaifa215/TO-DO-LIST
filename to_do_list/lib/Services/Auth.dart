@@ -16,6 +16,10 @@ abstract class AuthBase {
 
   Future<User> signInFacebook();
 
+  Future<User> signInWithEmailAndPassword(String email, String password);
+
+  Future<User> CreateUserWithEmailAndPassword(String email, String password);
+
   Future<void> signOut();
 }
 
@@ -42,8 +46,8 @@ class Auth implements AuthBase {
   @override
   Future<User> signInWithGoogle() async {
     final googleSignIn = GoogleSignIn();
-    final googleUser = await googleSignIn
-        .signIn(); // allow the user and get the user
+    final googleUser =
+        await googleSignIn.signIn(); // allow the user and get the user
     if (googleUser != null) {
       // get the token from that we can proceed
       final googleAuht = await googleUser.authentication;
@@ -81,18 +85,15 @@ class Auth implements AuthBase {
       case FacebookLoginStatus.Success:
         final accessToken = responce.accessToken;
         final UserCredential = await _firebaseAuth.signInWithCredential(
-            FacebookAuthProvider.credential(accessToken.token)
-        );
+            FacebookAuthProvider.credential(accessToken.token));
         return UserCredential.user;
 
 // if the login cancel
       case FacebookLoginStatus.Cancel:
         throw FirebaseAuthException(
-            code: "ERROR_ABROTED_BY_USER",
-            message: "Sign in abroted by user"
-        );
+            code: "ERROR_ABROTED_BY_USER", message: "Sign in abroted by user");
 
-    // check error if an error occur
+      // check error if an error occur
       case FacebookLoginStatus.Error:
         throw FirebaseAuthException(
           code: "ERROR_LOGIN_FACEBOOK_FAILED",
@@ -104,6 +105,23 @@ class Auth implements AuthBase {
     }
   }
 
+  // sign in with email and password
+  @override
+  Future<User> signInWithEmailAndPassword(String email, String password) async {
+    final usercredentials = await _firebaseAuth.signInWithCredential(
+        EmailAuthProvider.credential(email: email, password: password));
+    return usercredentials.user;
+  }
+
+  // Create account with email and password
+  @override
+  Future<User> CreateUserWithEmailAndPassword(
+      String email, String password) async {
+    final usercredentials = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    return usercredentials.user;
+  }
+
   @override
   Future<void> signOut() async {
     // final googleSignIn = GoogleSignIn();
@@ -111,6 +129,5 @@ class Auth implements AuthBase {
     // final facebook = FacebookLogin();
     // await facebook.logOut();
     await _firebaseAuth.signOut();
-
   }
 }
