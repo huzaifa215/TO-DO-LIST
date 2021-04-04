@@ -44,6 +44,9 @@ class SignInPage extends StatelessWidget {
     }
   }
 
+void _signInWithEmail(BuildContext context){
+    // TODO: show EmailSignIn page
+}
 
   @override
   Widget build(BuildContext context) {
