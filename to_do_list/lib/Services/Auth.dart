@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
-import 'package:flutter_vk_sdk/vk_scope.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_login_vk/flutter_login_vk.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/homepage.dart';
-import 'package:flutter_vk_sdk/flutter_vk_sdk.dart';
+
 
 abstract class AuthBase {
-
   // only declare here
   User get currentUser;
 
@@ -28,15 +28,28 @@ abstract class AuthBase {
 
 class Auth implements AuthBase {
 
-
   // wrapper for firebase AUTH
   final _firebaseAuth = FirebaseAuth.instance;
 
   @override
   Stream<User> authStateChanges() => _firebaseAuth.authStateChanges();
+ // bool _sdkInitialized = false;
 
   @override
   User get currentUser => _firebaseAuth.currentUser; // getter that give data
+
+  // Future<void> _initSdk() async {
+  //   await widget.plugin.initSdk('7503887');
+  //   _sdkInitialized = true;
+  //   await _updateLoginInfo();
+  // }
+  //
+  // Future<void> _getSdkVersion() async {
+  //   final sdkVersion = await widget.plugin.sdkVersion;
+  //   setState(() {
+  //     _sdkVersion = sdkVersion;
+  //   });
+  // }
 
   @override
   Future<User> signInAnonymously() async {
@@ -126,12 +139,59 @@ class Auth implements AuthBase {
         email: email, password: password);
     return usercredentials.user;
   }
+// TODO: VK loGin
 
-  // Login with VK
-  Future<User> VKlogin() async{
-    
+//   Future<User> LoginWithVk() async{
+//     // Create an instance of VKLogin
+//     final vk = VKLogin();
+//     final fb = FacebookLogin();
+//
+// // Initialize
+//     await vk.initSdk('7813504');
+//
+// // Log in
+//     final res = await vk.logIn(scope: [
+//       VKScope.email,
+//       VKScope.friends,
+//     ]);
+//
+//     // Check result
+//     if (res.isValue) {
+//       // There is no error, but we don't know yet
+//       // if user loggen in or not.
+//       // You should check isCanceled
+//       final VKLoginResult data = res.asValue.value;
+//
+//       if (res.isError) {
+//         // User cancel log in
+//         print("failed");
+//       } else {
+//         // Logged in
+//         // Send access token to server for validation and auth
+//         final accessToken = res.accessToken;
+//         print('Access token: ${accessToken.token}');
+//
+//         // Get profile data
+//         final profile = await fb.getUserProfile();
+//         print('Hello, ${profile.firstName}! You ID: ${profile.userId}');
+//
+//         // Get email (since we request email permissions)
+//         final email = await fb.getUserEmail();
+//         print('And your email is $email');
+//
+//         final UserCredential = await _firebaseAuth.signInWithCredential(
+//             FacebookAuthProvider.credential(accessToken.token));
+//         return UserCredential.user;
+//
+//       }
+//     } else {
+//       // Log in failed
+//       final errorRes = res.asError;
+//       print('Error while log in: ${errorRes.error}');
+//     }
+//   }
 
-  }
+
 
   @override
   Future<void> signOut() async {
