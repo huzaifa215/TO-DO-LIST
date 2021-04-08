@@ -25,12 +25,13 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 
   EmailSignInFormType _formType = EmailSignInFormType.signIn;
 
-
   String get _email => _emailController.text;
+
   String get _password => _passwordController.text;
+
   String get _OTP => _OTPController.text;
 
-
+  // getting email
 
   void _submit() async {
     // TODO: print the email and password but than transfer data to the firebase
@@ -39,7 +40,9 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         await widget.auth.signInWithEmailAndPassword(_email, _password);
       } else {
         await widget.auth.CreateUserWithEmailAndPassword(_email, _password);
+        _sendOTP();
       }
+     // Navigator.of(context).pop();// move to the sign in page  therefore the  2 times navigator.pop is used to reach the homepage
       Navigator.of(context).pop(); // move to landing page
     } catch (e) {
       print(e.toString());
@@ -73,8 +76,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     var res = await EmailAuth.sendOtp(receiverMail: _email);
     if (res) {
       print("OTP Send");
-    }
-    else{
+    } else {
       print("Problem in sending OTP");
     }
   }
@@ -85,8 +87,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     if (res) {
       print("OPT Verify");
       _submit();
-    }
-    else{
+    } else {
       print("invalid OTP");
     }
   }
@@ -99,12 +100,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 //
 // }
 
-
-
   List<Widget> _builtChildern() {
     final primarytext = (_formType == EmailSignInFormType.signIn
         ? " Sign In"
-        : "Verify OTP");
+        : "Create Account");
     final secondarytext = (_formType == EmailSignInFormType.signIn
         ? "Need an Account? Register"
         : "Have an Account? Sign In");
@@ -120,16 +119,26 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         height: 8.0,
       ),
       // OTP text feild
-      _buildOTP(),
+      // _buildOTP(),
       SizedBox(
         height: 8.0,
       ),
       FormSubmitButton(
         // do the setstate to doe the logic formation
         text: primarytext,
-        onpressed: _submit,
+        onpressed: () {
+          setState(() {
+            if (primarytext == " Sign In") {
+              _submit();
+            }
+            else{
+              _sendOTP();
+              OPTsheet();
+            }
+          },
+          );
+        }
       ),
-
       SizedBox(
         height: 8.0,
       ),
@@ -162,10 +171,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         labelText: 'Email',
         hintText: "test@test.com",
         //TODO: written as a power on the email
-        suffixIcon:TextButton(
-          child: Text("Send OTP"),
-          onPressed : _sendOTP,
-        )
+        // suffixIcon:TextButton(
+        //   child: Text("Send OTP"),
+        //   onPressed : _sendOTP,
+        // )
       ),
       //autocorrect: false,//TODO: used to enable the keyboard suggestion
       keyboardType: TextInputType.emailAddress,
@@ -202,5 +211,38 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       keyboardType: TextInputType.visiblePassword,
       textInputAction: TextInputAction.done,
     );
+  }
+
+  void OPTsheet(){
+    showModalBottomSheet(context: context, builder:(context){
+        return Container(
+          height: 180,
+          decoration: BoxDecoration(
+            color: Theme.of(context).canvasColor,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(30),
+              topRight: const Radius.circular(30),
+            )
+          ),
+          child: Center(
+            child: Card(
+              child: Column(
+                children: [
+                  _buildOTP(),
+                  SizedBox(
+                    height: 8.0,
+                  ),
+
+                  FormSubmitButton(
+                    // do the setstate to doe the logic formation
+                    text: "Verify",
+                    onpressed: _verifyOTP,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+    });
   }
 }

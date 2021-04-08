@@ -31,6 +31,7 @@ class Auth implements AuthBase {
   // wrapper for firebase AUTH
   final _firebaseAuth = FirebaseAuth.instance;
 
+
   @override
   Stream<User> authStateChanges() => _firebaseAuth.authStateChanges();
  // bool _sdkInitialized = false;

@@ -12,7 +12,7 @@ class EmailSignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("Sign In")),
+        title: Center(child: Text("Credentials Form")),
         elevation: 20.0, // shadow under the ap bas
         toolbarHeight: 75,
       ),
