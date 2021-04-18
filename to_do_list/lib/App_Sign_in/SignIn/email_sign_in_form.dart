@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:to_do_list/Common_widgets/form_submit_button.dart';
 import 'package:to_do_list/Services/Auth.dart';
 import 'package:email_auth/email_auth.dart';
@@ -31,6 +32,8 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 
   String get _OTP => _OTPController.text;
 
+
+
   // getting email
 
   void _submit() async {
@@ -41,6 +44,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       } else {
         await widget.auth.CreateUserWithEmailAndPassword(_email, _password);
         _sendOTP();
+        Navigator.of(context).pop();
       }
      // Navigator.of(context).pop();// move to the sign in page  therefore the  2 times navigator.pop is used to reach the homepage
       Navigator.of(context).pop(); // move to landing page
@@ -107,6 +111,9 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     final secondarytext = (_formType == EmailSignInFormType.signIn
         ? "Need an Account? Register"
         : "Have an Account? Sign In");
+    // TODO variable that store the current sate that we cannot enter the enter data and submit it
+    bool submitEnabled=_email.isNotEmpty && _password.isNotEmpty;
+
     return [
       // email field input
       _buildemail(),
@@ -126,17 +133,23 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       FormSubmitButton(
         // do the setstate to doe the logic formation
         text: primarytext,
-        onpressed: () {
-          setState(() {
-            if (primarytext == " Sign In") {
-              _submit();
-            }
-            else{
-              _sendOTP();
-              OPTsheet();
-            }
-          },
-          );
+        onpressed: (){
+          if(submitEnabled==true){
+            setState(() {
+              if (primarytext == " Sign In") {
+                _submit();
+              }
+              else{
+                _sendOTP();
+                OPTsheet();
+              }
+            },
+            );
+          }
+          else{
+            Showtost("Enter the Email and password");
+            submitEnabled=null;
+          }
         }
       ),
       SizedBox(
@@ -166,11 +179,11 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     return TextField(
       // TODO: what ever will be written in the textfield it aotumaticcaly edited in the controller
       controller: _emailController,
-      focusNode: _emailFocusNode,
+      focusNode: _emailFocusNode,// Focus only on the box taht you have selected
       decoration: InputDecoration(
         labelText: 'Email',
         hintText: "test@test.com",
-        //TODO: written as a power on the email
+        //TODO: written as a power on the email\
         // suffixIcon:TextButton(
         //   child: Text("Send OTP"),
         //   onPressed : _sendOTP,
@@ -182,6 +195,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       textInputAction: TextInputAction.next,
       // TODO: show the button that on which we click move to the password section
       onEditingComplete: _emailEditingComplete,
+      onChanged: (email)=>updateState(),
     );
   }
 
@@ -197,6 +211,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       autocorrect: false,
       keyboardType: TextInputType.visiblePassword,
       textInputAction: TextInputAction.next,
+      onChanged: (_password)=>updateState(),
     );
   }
 
@@ -208,8 +223,23 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       decoration:
           InputDecoration(labelText: 'OTP Code', hintText: "Enter the OTP"),
       autocorrect: false,
-      keyboardType: TextInputType.visiblePassword,
+      keyboardType: TextInputType.phone,
       textInputAction: TextInputAction.done,
+    );
+  }
+
+
+  // submit form
+  void submit_form(final primarytext){
+    setState(() {
+      if (primarytext == " Sign In") {
+        _submit();
+      }
+      else{
+        _sendOTP();
+        OPTsheet();
+      }
+    },
     );
   }
 
@@ -244,5 +274,22 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
           ),
         );
     });
+  }
+
+  updateState() {
+    print ("email is$_email and the $_password");
+    setState(() {});
+  }
+
+ Showtost(msg){
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.SNACKBAR,
+        timeInSecForIosWeb: 5,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
   }
 }
