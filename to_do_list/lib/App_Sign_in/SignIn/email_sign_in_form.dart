@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:to_do_list/App_Sign_in/SignIn/validator.dart';
 import 'package:to_do_list/Common_widgets/form_submit_button.dart';
 import 'package:to_do_list/Services/Auth.dart';
 import 'package:email_auth/email_auth.dart';
 
 enum EmailSignInFormType { signIn, register }
 
-class EmailSignInForm extends StatefulWidget {
+class EmailSignInForm extends StatefulWidget with EmailAndPasswordValidator {
   final AuthBase auth;
 
-  const EmailSignInForm({Key key, this.auth}) : super(key: key);
+  EmailSignInForm({Key key, this.auth}) : super(key: key);
 
   @override
   _EmailSignInFormState createState() => _EmailSignInFormState();
@@ -24,6 +26,8 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _OTPFocusNode = FocusNode();
 
+
+
   EmailSignInFormType _formType = EmailSignInFormType.signIn;
 
   String get _email => _emailController.text;
@@ -31,31 +35,42 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   String get _password => _passwordController.text;
 
   String get _OTP => _OTPController.text;
+  bool _sumbited=false;
+  bool isLoading =false;
+
 
 
 
   // getting email
 
   void _submit() async {
+    print ("Submit called");
+   setState(() {
+     _sumbited=true;
+     isLoading=true;
+   });
     // TODO: print the email and password but than transfer data to the firebase
     try {
       if (_formType == EmailSignInFormType.signIn) {
         await widget.auth.signInWithEmailAndPassword(_email, _password);
       } else {
         await widget.auth.CreateUserWithEmailAndPassword(_email, _password);
-        _sendOTP();
+        //_sendOTP();
         Navigator.of(context).pop();
       }
      // Navigator.of(context).pop();// move to the sign in page  therefore the  2 times navigator.pop is used to reach the homepage
       Navigator.of(context).pop(); // move to landing page
     } catch (e) {
       print(e.toString());
+    }finally{
+      isLoading=false;
     }
   }
 
   void _emailEditingComplete() {
+    final newFocus=widget.emailValidator.isValid(_email) ? _passwordFocusNode :_emailFocusNode;
     // TODO: keep track on the next widget or the widgets to follow the flow
-    FocusScope.of(context).requestFocus(_passwordFocusNode);
+    FocusScope.of(context).requestFocus(newFocus);
   }
 
   void _passwordEditingComplete() {
@@ -66,6 +81,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 // TODO: Toggole set the _formkey here and when the _builtChilder will call it changes
   void _toogleFormType() {
     setState(() {
+      _sumbited=false;
       _formType = _formType == EmailSignInFormType.signIn
           ? EmailSignInFormType.register
           : EmailSignInFormType.signIn;
@@ -112,7 +128,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         ? "Need an Account? Register"
         : "Have an Account? Sign In");
     // TODO variable that store the current sate that we cannot enter the enter data and submit it
-    bool submitEnabled=_email.isNotEmpty && _password.isNotEmpty;
+    bool submitEnabled=widget.emailValidator.isValid(_email) && widget.emailValidator.isValid(_password) && !isLoading;
 
     return [
       // email field input
@@ -147,7 +163,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
             );
           }
           else{
-            Showtost("Enter the Email and password");
+            // Showtost("Enter the Email and password");
             submitEnabled=null;
           }
         }
@@ -158,6 +174,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       // TODO: Flat button have no prominant boder
       FlatButton(
         onPressed: _toogleFormType,
+       // onPressed: !isLoading ?_toogleFormType : null,
         child: Text(secondarytext),
       )
     ];
@@ -176,6 +193,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   TextField _buildemail() {
+    bool emailValid=widget.emailValidator.isValid(_email);
     return TextField(
       // TODO: what ever will be written in the textfield it aotumaticcaly edited in the controller
       controller: _emailController,
@@ -183,6 +201,8 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       decoration: InputDecoration(
         labelText: 'Email',
         hintText: "test@test.com",
+       // enabled: isLoading == false,
+        errorText: emailValid ?  null:widget.invalidEmailText,
         //TODO: written as a power on the email\
         // suffixIcon:TextButton(
         //   child: Text("Send OTP"),
@@ -200,12 +220,15 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   TextField _buildpassword() {
+    bool passwordValid= _sumbited && !widget.passwordValidator.isValid(_password);
     return TextField(
       controller: _passwordController,
       focusNode: _passwordFocusNode,
       onEditingComplete: _passwordEditingComplete,
       decoration: InputDecoration(
         labelText: 'Password',
+       // enabled: isLoading==false,
+        errorText: passwordValid ? null :widget.invalidPasswordText ,
       ),
       obscureText: true,
       autocorrect: false,
@@ -223,7 +246,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       decoration:
           InputDecoration(labelText: 'OTP Code', hintText: "Enter the OTP"),
       autocorrect: false,
-      keyboardType: TextInputType.phone,
+      keyboardType: TextInputType.number ,
       textInputAction: TextInputAction.done,
     );
   }
@@ -281,15 +304,15 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     setState(() {});
   }
 
- Showtost(msg){
-    Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.SNACKBAR,
-        timeInSecForIosWeb: 5,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
-  }
+ // Showtost(msg){
+ //    Fluttertoast.showToast(
+ //        msg: msg,
+ //        toastLength: Toast.LENGTH_SHORT,
+ //        gravity: ToastGravity.SNACKBAR,
+ //        timeInSecForIosWeb: 5,
+ //        backgroundColor: Colors.red,
+ //        textColor: Colors.white,
+ //        fontSize: 16.0
+ //    );
+ //  }
 }

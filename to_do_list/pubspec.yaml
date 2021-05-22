@@ -37,6 +37,7 @@ dependencies:
   email_auth:
   flutter_login_vk: ^0.2.0
   fluttertoast: ^8.0.4
+  flutter_spinkit: ^5.0.0
 
 
 dev_dependencies:

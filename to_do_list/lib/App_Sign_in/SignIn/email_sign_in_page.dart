@@ -16,9 +16,14 @@ class EmailSignInPage extends StatelessWidget {
         elevation: 20.0, // shadow under the ap bas
         toolbarHeight: 75,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Card(child: EmailSignInForm(auth: auth,)
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Card(
+              child: EmailSignInForm(
+            auth: auth,
+          )),
         ),
       ),
       backgroundColor: Colors.grey[200],
