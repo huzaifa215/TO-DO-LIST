@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/validator.dart';
+import 'package:to_do_list/Common_widgets/ShowAlertDialog.dart';
 import 'package:to_do_list/Common_widgets/form_submit_button.dart';
 import 'package:to_do_list/Services/Auth.dart';
 import 'package:email_auth/email_auth.dart';
-import 'package:flutter/cupertino.dart';// for IOS Design
+import 'package:flutter/cupertino.dart'; // for IOS Design
 
 enum EmailSignInFormType { signIn, register }
 
@@ -29,8 +30,6 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _OTPFocusNode = FocusNode();
 
-
-
   EmailSignInFormType _formType = EmailSignInFormType.signIn;
 
   String get _email => _emailController.text;
@@ -38,20 +37,17 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   String get _password => _passwordController.text;
 
   String get _OTP => _OTPController.text;
-  bool _sumbited=false;
-  bool isLoading =false;
-
-
-
+  bool _sumbited = false;
+  bool isLoading = false;
 
   // getting email
 
   void _submit() async {
-    print ("Submit called");
-   setState(() {
-     _sumbited=true;
-     isLoading=true;
-   });
+    print("Submit called");
+    setState(() {
+      _sumbited = true;
+      isLoading = true;
+    });
     // TODO: print the email and password but than transfer data to the firebase
     try {
       if (_formType == EmailSignInFormType.signIn) {
@@ -61,35 +57,22 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         //_sendOTP();
         Navigator.of(context).pop();
       }
-     // Navigator.of(context).pop();// move to the sign in page  therefore the  2 times navigator.pop is used to reach the homepage
+      // Navigator.of(context).pop();// move to the sign in page  therefore the  2 times navigator.pop is used to reach the homepage
       Navigator.of(context).pop(); // move to landing page
     } catch (e) {
-      print(e.toString());
-      if(Platform.isIOS){// check the platform here
-
-
-      }
-      else{
-        showDialog(context: context, builder: (context){
-          return AlertDialog(
-            title: Text("Sgin In Failed"),
-            content: Text(e.toString()),
-            actions: [
-              FlatButton(
-                  onPressed:()=> Navigator.of(context).pop()
-                  , child: Text("OK"))
-            ],
-          );
-        }
-        );
-      }
-    }finally{
-      isLoading=false;
+      showAlertDialog(context,
+          title: "Sign In Failed",
+          content: e.toString(),
+          defaultActionText: "OK");
+    } finally {
+      isLoading = false;
     }
   }
 
   void _emailEditingComplete() {
-    final newFocus=widget.emailValidator.isValid(_email) ? _passwordFocusNode :_emailFocusNode;
+    final newFocus = widget.emailValidator.isValid(_email)
+        ? _passwordFocusNode
+        : _emailFocusNode;
     // TODO: keep track on the next widget or the widgets to follow the flow
     FocusScope.of(context).requestFocus(newFocus);
   }
@@ -102,7 +85,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 // TODO: Toggole set the _formkey here and when the _builtChilder will call it changes
   void _toogleFormType() {
     setState(() {
-      _sumbited=false;
+      _sumbited = false;
       _formType = _formType == EmailSignInFormType.signIn
           ? EmailSignInFormType.register
           : EmailSignInFormType.signIn;
@@ -149,7 +132,9 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         ? "Need an Account? Register"
         : "Have an Account? Sign In");
     // TODO variable that store the current sate that we cannot enter the enter data and submit it
-    bool submitEnabled=widget.emailValidator.isValid(_email) && widget.emailValidator.isValid(_password) && !isLoading;
+    bool submitEnabled = widget.emailValidator.isValid(_email) &&
+        widget.emailValidator.isValid(_password) &&
+        !isLoading;
 
     return [
       // email field input
@@ -168,34 +153,32 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         height: 8.0,
       ),
       FormSubmitButton(
-        // do the setstate to doe the logic formation
-        text: primarytext,
-        onpressed: (){
-          if(submitEnabled==true){
-            setState(() {
-              if (primarytext == " Sign In") {
-                _submit();
-              }
-              else{
-                _sendOTP();
-                OPTsheet();
-              }
-            },
-            );
-          }
-          else{
-            // Showtost("Enter the Email and password");
-            submitEnabled=null;
-          }
-        }
-      ),
+          // do the setstate to doe the logic formation
+          text: primarytext,
+          onpressed: () {
+            if (submitEnabled == true) {
+              setState(
+                () {
+                  if (primarytext == " Sign In") {
+                    _submit();
+                  } else {
+                    _sendOTP();
+                    OPTsheet();
+                  }
+                },
+              );
+            } else {
+              // Showtost("Enter the Email and password");
+              submitEnabled = null;
+            }
+          }),
       SizedBox(
         height: 8.0,
       ),
       // TODO: Flat button have no prominant boder
       FlatButton(
         onPressed: _toogleFormType,
-       // onPressed: !isLoading ?_toogleFormType : null,
+        // onPressed: !isLoading ?_toogleFormType : null,
         child: Text(secondarytext),
       )
     ];
@@ -214,16 +197,17 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   TextField _buildemail() {
-    bool emailValid=widget.emailValidator.isValid(_email);
+    bool emailValid = widget.emailValidator.isValid(_email);
     return TextField(
       // TODO: what ever will be written in the textfield it aotumaticcaly edited in the controller
       controller: _emailController,
-      focusNode: _emailFocusNode,// Focus only on the box taht you have selected
+      focusNode: _emailFocusNode,
+      // Focus only on the box taht you have selected
       decoration: InputDecoration(
         labelText: 'Email',
         hintText: "test@test.com",
-       // enabled: isLoading == false,
-        errorText: emailValid ?  null:widget.invalidEmailText,
+        // enabled: isLoading == false,
+        errorText: emailValid ? null : widget.invalidEmailText,
         //TODO: written as a power on the email\
         // suffixIcon:TextButton(
         //   child: Text("Send OTP"),
@@ -236,26 +220,27 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       textInputAction: TextInputAction.next,
       // TODO: show the button that on which we click move to the password section
       onEditingComplete: _emailEditingComplete,
-      onChanged: (email)=>updateState(),
+      onChanged: (email) => updateState(),
     );
   }
 
   TextField _buildpassword() {
-    bool passwordValid= _sumbited && !widget.passwordValidator.isValid(_password);
+    bool passwordValid =
+        _sumbited && !widget.passwordValidator.isValid(_password);
     return TextField(
       controller: _passwordController,
       focusNode: _passwordFocusNode,
       onEditingComplete: _passwordEditingComplete,
       decoration: InputDecoration(
         labelText: 'Password',
-       // enabled: isLoading==false,
-        errorText: passwordValid ? null :widget.invalidPasswordText ,
+        // enabled: isLoading==false,
+        errorText: passwordValid ? null : widget.invalidPasswordText,
       ),
       obscureText: true,
       autocorrect: false,
       keyboardType: TextInputType.visiblePassword,
       textInputAction: TextInputAction.next,
-      onChanged: (_password)=>updateState(),
+      onChanged: (_password) => updateState(),
     );
   }
 
@@ -267,73 +252,72 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       decoration:
           InputDecoration(labelText: 'OTP Code', hintText: "Enter the OTP"),
       autocorrect: false,
-      keyboardType: TextInputType.number ,
+      keyboardType: TextInputType.number,
       textInputAction: TextInputAction.done,
     );
   }
 
-
   // submit form
-  void submit_form(final primarytext){
-    setState(() {
-      if (primarytext == " Sign In") {
-        _submit();
-      }
-      else{
-        _sendOTP();
-        OPTsheet();
-      }
-    },
+  void submit_form(final primarytext) {
+    setState(
+      () {
+        if (primarytext == " Sign In") {
+          _submit();
+        } else {
+          _sendOTP();
+          OPTsheet();
+        }
+      },
     );
   }
 
-  void OPTsheet(){
-    showModalBottomSheet(context: context, builder:(context){
-        return Container(
-          height: 180,
-          decoration: BoxDecoration(
-            color: Theme.of(context).canvasColor,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(30),
-              topRight: const Radius.circular(30),
-            )
-          ),
-          child: Center(
-            child: Card(
-              child: Column(
-                children: [
-                  _buildOTP(),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-
-                  FormSubmitButton(
-                    // do the setstate to doe the logic formation
-                    text: "Verify",
-                    onpressed: _verifyOTP,
-                  ),
-                ],
+  void OPTsheet() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 180,
+            decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(30),
+                  topRight: const Radius.circular(30),
+                )),
+            child: Center(
+              child: Card(
+                child: Column(
+                  children: [
+                    _buildOTP(),
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                    FormSubmitButton(
+                      // do the setstate to doe the logic formation
+                      text: "Verify",
+                      onpressed: _verifyOTP,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-    });
+          );
+        });
   }
 
   updateState() {
-    print ("email is$_email and the $_password");
+    print("email is$_email and the $_password");
     setState(() {});
   }
 
- // Showtost(msg){
- //    Fluttertoast.showToast(
- //        msg: msg,
- //        toastLength: Toast.LENGTH_SHORT,
- //        gravity: ToastGravity.SNACKBAR,
- //        timeInSecForIosWeb: 5,
- //        backgroundColor: Colors.red,
- //        textColor: Colors.white,
- //        fontSize: 16.0
- //    );
- //  }
+// Showtost(msg){
+//    Fluttertoast.showToast(
+//        msg: msg,
+//        toastLength: Toast.LENGTH_SHORT,
+//        gravity: ToastGravity.SNACKBAR,
+//        timeInSecForIosWeb: 5,
+//        backgroundColor: Colors.red,
+//        textColor: Colors.white,
+//        fontSize: 16.0
+//    );
+//  }
 }
