@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -5,6 +7,7 @@ import 'package:to_do_list/App_Sign_in/SignIn/validator.dart';
 import 'package:to_do_list/Common_widgets/form_submit_button.dart';
 import 'package:to_do_list/Services/Auth.dart';
 import 'package:email_auth/email_auth.dart';
+import 'package:flutter/cupertino.dart';// for IOS Design
 
 enum EmailSignInFormType { signIn, register }
 
@@ -62,6 +65,24 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       Navigator.of(context).pop(); // move to landing page
     } catch (e) {
       print(e.toString());
+      if(Platform.isIOS){// check the platform here
+
+
+      }
+      else{
+        showDialog(context: context, builder: (context){
+          return AlertDialog(
+            title: Text("Sgin In Failed"),
+            content: Text(e.toString()),
+            actions: [
+              FlatButton(
+                  onPressed:()=> Navigator.of(context).pop()
+                  , child: Text("OK"))
+            ],
+          );
+        }
+        );
+      }
     }finally{
       isLoading=false;
     }
