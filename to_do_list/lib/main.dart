@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/LandingPage/landdingpade.dart';
 import 'package:to_do_list/Services/Auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:to_do_list/Services/AuthProvider.dart';
 
 
 const String APP_ID = '12345';
@@ -20,14 +21,16 @@ Future<void> main() async{
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "TO DO List",
-      theme: ThemeData(
-        primaryColor: Colors.indigo,
-      ),
-      home: LanddindgPage(
-        auth: Auth(),// for firebase authentication
+    return AuthProvider(
+      auth: Auth(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "TO DO List",
+        theme: ThemeData(
+          primaryColor: Colors.indigo,
+        ),
+        home: LanddindgPage()
+          // auth: Auth(),// for firebase authentication),
       ),
     );
   }

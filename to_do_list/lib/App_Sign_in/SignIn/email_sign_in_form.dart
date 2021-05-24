@@ -8,14 +8,15 @@ import 'package:to_do_list/Common_widgets/ShowAlertDialog.dart';
 import 'package:to_do_list/Common_widgets/form_submit_button.dart';
 import 'package:to_do_list/Services/Auth.dart';
 import 'package:email_auth/email_auth.dart';
-import 'package:flutter/cupertino.dart'; // for IOS Design
+import 'package:flutter/cupertino.dart';
+import 'package:to_do_list/Services/AuthProvider.dart'; // for IOS Design
 
 enum EmailSignInFormType { signIn, register }
 
 class EmailSignInForm extends StatefulWidget with EmailAndPasswordValidator {
-  final AuthBase auth;
-
-  EmailSignInForm({Key key, this.auth}) : super(key: key);
+  // final AuthBase auth;
+  //
+  // EmailSignInForm({Key key, this.auth}) : super(key: key);
 
   @override
   _EmailSignInFormState createState() => _EmailSignInFormState();
@@ -50,10 +51,11 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     });
     // TODO: print the email and password but than transfer data to the firebase
     try {
+      final auth=AuthProvider.of(context);
       if (_formType == EmailSignInFormType.signIn) {
-        await widget.auth.signInWithEmailAndPassword(_email, _password);
+        await auth.signInWithEmailAndPassword(_email, _password);
       } else {
-        await widget.auth.CreateUserWithEmailAndPassword(_email, _password);
+        await auth.CreateUserWithEmailAndPassword(_email, _password);
         //_sendOTP();
         Navigator.of(context).pop();
       }

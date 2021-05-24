@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/homepage.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/sign_in_page.dart';
 import 'package:to_do_list/Services/Auth.dart';
+import 'package:to_do_list/Services/AuthProvider.dart';
 
 class LanddindgPage extends StatefulWidget {
   //due to statefull we use widget but for stateless we onl use auth.etc
-  final AuthBase auth;
-
-  const LanddindgPage({Key key, this.auth}) : super(key: key);
+  // final AuthBase auth;
+  //
+  // const LanddindgPage({Key key, this.auth}) : super(key: key);
 
   @override
   _LanddindgPageState createState() => _LanddindgPageState();
@@ -48,11 +49,12 @@ class _LanddindgPageState extends State<LanddindgPage> {
 
   @override
   Widget build(BuildContext context) {
+    final auth=AuthProvider.of(context);
     // stream are sources for asyncronous data
     return StreamBuilder<User>// that the steam will deals with users
       (
       //initialData: widget.auth.authStateChanges(),// inital data optional if we pass the intial data no need to check the connection
-      stream: widget.auth.authStateChanges(),
+      stream: auth.authStateChanges(),
       builder: (context, snapshot) {
         // snapshot that hold the data from the stream
         // check connection state
@@ -63,13 +65,13 @@ class _LanddindgPageState extends State<LanddindgPage> {
           final User user = snapshot.data;
           if (user == null) {
             return SignInPage(
-              auth: widget.auth,
+              //auth: auth,
              // onSignIn: _updateUser,
             );
           }
           else {
             return HomePage(
-              auth: widget.auth,
+              //auth: auth,
               // OnSignOut: () => _updateUser(null),
             );
           }

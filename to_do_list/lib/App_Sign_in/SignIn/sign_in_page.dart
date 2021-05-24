@@ -5,17 +5,19 @@ import 'package:to_do_list/App_Sign_in/SignIn/homepage.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/social_signin_button.dart';
 import 'file:///D:/FlutterApp/TO-DO-LIST/to_do_list/lib/App_Sign_in/SignIn/Sign_in_button.dart';
 import 'package:to_do_list/Services/Auth.dart';
+import 'package:to_do_list/Services/AuthProvider.dart';
 
 class SignInPage extends StatelessWidget {
-  const SignInPage({Key key,@required this.auth}) : super(key: key);
-  // due to stream we donot need  no call back inorder to sign in anosmusly
- // final void Function(User) onSignIn;
-
-  final AuthBase auth;
+ //  const SignInPage({Key key,@required this.auth}) : super(key: key);
+ //  // due to stream we donot need  no call back inorder to sign in anosmusly
+ // // final void Function(User) onSignIn;
+ //
+ //  final AuthBase auth;
 
 // SignIn Anonymously
-  Future<void> _signInAnonymously() async {
+  Future<void> _signInAnonymously(BuildContext context) async {
     try {
+      final auth=AuthProvider.of(context);
       await auth.signInAnonymously();
      // return HomePage();
      // onSignIn(user);
@@ -25,8 +27,9 @@ class SignInPage extends StatelessWidget {
   }
 
 // google
-  Future<void> _signInWithGoogle() async {
+  Future<void> _signInWithGoogle(BuildContext context) async {
     try {
+      final auth=AuthProvider.of(context);
       await auth.signInWithGoogle();
       // onSignIn(user);
       return HomePage();
@@ -35,8 +38,9 @@ class SignInPage extends StatelessWidget {
     }
   }
 // facebook
-  Future<void> _signInWithFacebook() async {
+  Future<void> _signInWithFacebook(BuildContext context) async {
     try {
+      final auth=AuthProvider.of(context);
       await auth.signInFacebook();
       // onSignIn(user);
       return HomePage();
@@ -52,7 +56,7 @@ void _signInWithEmail(BuildContext context){
     MaterialPageRoute<void>(
       // navigation behaviour
       fullscreenDialog: true,
-      builder: (context) =>EmailSignInPage(auth: auth,),
+      builder: (context) =>EmailSignInPage(),
     )
   );
 
@@ -95,7 +99,7 @@ void _signInWithEmail(BuildContext context){
             textColor: Colors.black87,
             color: Colors.white,
             image: "images/google-logo.png",
-            onpressed: _signInWithGoogle,
+            onpressed:() => _signInWithGoogle(context),
           ),
           SizedBox(
             height: 8.0,
@@ -105,7 +109,7 @@ void _signInWithEmail(BuildContext context){
             textColor: Colors.white,
             color: Color(0xFF334D92),
             // constructor passing value
-            onpressed: _signInWithFacebook,
+            onpressed:() => _signInWithFacebook(context),
             image: "images/facebook-logo.png",
           ),
           SizedBox(
@@ -143,7 +147,7 @@ void _signInWithEmail(BuildContext context){
             text: "Go Anonymous",
             textColor: Colors.black87,
             color: Colors.lime[300], // constructor passing value
-            onpressed: _signInAnonymously,
+            onpressed:() =>_signInAnonymously(context ),
           ),
 
         ],

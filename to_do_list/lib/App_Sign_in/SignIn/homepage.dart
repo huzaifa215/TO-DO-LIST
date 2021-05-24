@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list/Common_widgets/ShowAlertDialog.dart';
 import 'package:to_do_list/Services/Auth.dart';
+import 'package:to_do_list/Services/AuthProvider.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key key, this.auth}) : super(key: key);
+//   const HomePage({Key key, this.auth}) : super(key: key);
+//
+// //  final VoidCallback OnSignOut;
+//
+//   final AuthBase auth;
 
-//  final VoidCallback OnSignOut;
-
-  final AuthBase auth;
-
-  Future<void> _signOut() async {
+  Future<void> _signOut(BuildContext context) async {
     try {
+      final auth=AuthProvider.of(context);
       await auth.signOut();
       // OnSignOut();
     } catch (e) {
@@ -27,7 +29,7 @@ class HomePage extends StatelessWidget {
       cancelActionText: "Cancel",
     );
     if(didRequestSigout == true){
-      _signOut();
+      _signOut(context);
     }
   }
 
