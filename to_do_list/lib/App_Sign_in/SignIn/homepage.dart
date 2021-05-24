@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do_list/Common_widgets/ShowAlertDialog.dart';
 import 'package:to_do_list/Services/Auth.dart';
-import 'package:to_do_list/Services/AuthProvider.dart';
+
 
 class HomePage extends StatelessWidget {
 //   const HomePage({Key key, this.auth}) : super(key: key);
@@ -12,7 +13,7 @@ class HomePage extends StatelessWidget {
 
   Future<void> _signOut(BuildContext context) async {
     try {
-      final auth=AuthProvider.of(context);
+      final auth=Provider.of<AuthBase>(context,listen: false);
       await auth.signOut();
       // OnSignOut();
     } catch (e) {

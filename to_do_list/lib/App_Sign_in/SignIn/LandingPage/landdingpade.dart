@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/homepage.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/sign_in_page.dart';
 import 'package:to_do_list/Services/Auth.dart';
-import 'package:to_do_list/Services/AuthProvider.dart';
+
 
 class LanddindgPage extends StatefulWidget {
   //due to statefull we use widget but for stateless we onl use auth.etc
@@ -49,7 +50,7 @@ class _LanddindgPageState extends State<LanddindgPage> {
 
   @override
   Widget build(BuildContext context) {
-    final auth=AuthProvider.of(context);
+    final auth=Provider.of<AuthBase>(context,listen: false);// listen is true when we pass some obj taht state chnge
     // stream are sources for asyncronous data
     return StreamBuilder<User>// that the steam will deals with users
       (

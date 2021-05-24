@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/validator.dart';
 import 'package:to_do_list/Common_widgets/ShowAlertDialog.dart';
 import 'package:to_do_list/Common_widgets/form_submit_button.dart';
 import 'package:to_do_list/Services/Auth.dart';
 import 'package:email_auth/email_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:to_do_list/Services/AuthProvider.dart'; // for IOS Design
+import 'package:flutter/cupertino.dart';// for IOS Design
+//import 'package:to_do_list/Services/AuthProvider.dart';
 
 enum EmailSignInFormType { signIn, register }
 
@@ -51,7 +52,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     });
     // TODO: print the email and password but than transfer data to the firebase
     try {
-      final auth=AuthProvider.of(context);
+      final auth=Provider.of<AuthBase>(context,listen: false);
       if (_formType == EmailSignInFormType.signIn) {
         await auth.signInWithEmailAndPassword(_email, _password);
       } else {

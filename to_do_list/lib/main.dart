@@ -1,10 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/LandingPage/landdingpade.dart';
 import 'package:to_do_list/Services/Auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:to_do_list/Services/AuthProvider.dart';
-
 
 const String APP_ID = '12345';
 const String API_VERSION = '5.90';
@@ -21,8 +20,9 @@ Future<void> main() async{
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AuthProvider(
-      auth: Auth(),
+    return Provider<AuthBase>(
+      create: (context) => Auth(),
+     // auth: Auth(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "TO DO List",

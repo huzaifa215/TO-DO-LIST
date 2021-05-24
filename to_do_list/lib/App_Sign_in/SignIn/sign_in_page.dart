@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/email_sign_in_page.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/homepage.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/social_signin_button.dart';
 import 'file:///D:/FlutterApp/TO-DO-LIST/to_do_list/lib/App_Sign_in/SignIn/Sign_in_button.dart';
 import 'package:to_do_list/Services/Auth.dart';
-import 'package:to_do_list/Services/AuthProvider.dart';
 
 class SignInPage extends StatelessWidget {
  //  const SignInPage({Key key,@required this.auth}) : super(key: key);
@@ -17,7 +17,7 @@ class SignInPage extends StatelessWidget {
 // SignIn Anonymously
   Future<void> _signInAnonymously(BuildContext context) async {
     try {
-      final auth=AuthProvider.of(context);
+      final auth=Provider.of<AuthBase>(context,listen: false);
       await auth.signInAnonymously();
      // return HomePage();
      // onSignIn(user);
@@ -29,7 +29,7 @@ class SignInPage extends StatelessWidget {
 // google
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
-      final auth=AuthProvider.of(context);
+      final auth=Provider.of<AuthBase>(context,listen: false);
       await auth.signInWithGoogle();
       // onSignIn(user);
       return HomePage();
@@ -40,7 +40,7 @@ class SignInPage extends StatelessWidget {
 // facebook
   Future<void> _signInWithFacebook(BuildContext context) async {
     try {
-      final auth=AuthProvider.of(context);
+      final auth=Provider.of<AuthBase>(context,listen: false);
       await auth.signInFacebook();
       // onSignIn(user);
       return HomePage();
