@@ -11,8 +11,10 @@ Future<bool> showAlertDialog(
   String defaultActionText,
 }) {
   if (!Platform.isIOS) {
+
     return showDialog(
       context: context,
+      barrierDismissible: false,// TODO: keh agr jb dialog aya ho or hm screen pe kahen click karen tu wo wahn se dialog remove na ho is ke lia ye attribute he
       builder: (context) {
         return AlertDialog(
           title: Text(title),
