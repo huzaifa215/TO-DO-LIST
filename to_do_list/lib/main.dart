@@ -14,8 +14,7 @@ Future<void> main() async{
     // for VK.com
     WidgetsFlutterBinding.ensureInitialized();
     runApp(MyApp());
-
-}
+ }
 //
 class MyApp extends StatelessWidget {
   @override

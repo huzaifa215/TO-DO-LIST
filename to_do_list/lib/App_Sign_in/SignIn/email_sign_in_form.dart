@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -62,10 +63,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       }
       // Navigator.of(context).pop();// move to the sign in page  therefore the  2 times navigator.pop is used to reach the homepage
       Navigator.of(context).pop(); // move to landing page
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       showAlertDialog(context,
           title: "Sign In Failed",
-          content: e.toString(),
+          content: e.message,
           defaultActionText: "OK");
     } finally {
       isLoading = false;
