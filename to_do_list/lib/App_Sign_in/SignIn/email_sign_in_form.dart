@@ -40,8 +40,18 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   bool _sumbited = false;
   bool isLoading = false;
 
-  // getting email
+  @override
+  void dispose(){
+    //TODO: its  means that this tree will remove form the widget tree and on again it rebuild it
+    _emailController.dispose();
+    _passwordController.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
 
+
+  // getting email
   void _submit() async {
     print("Submit called");
     setState(() {

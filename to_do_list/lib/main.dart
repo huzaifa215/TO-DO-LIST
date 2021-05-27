@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: "TO DO List",
         theme: ThemeData(
+          brightness:Brightness.light,
           primaryColor: Colors.indigo,
         ),
         home: LanddindgPage()
