@@ -5,7 +5,6 @@ import 'package:to_do_list/App_Sign_in/SignIn/homepage.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/sign_in_page.dart';
 import 'package:to_do_list/Services/Auth.dart';
 
-
 class LanddindgPage extends StatefulWidget {
   //due to statefull we use widget but for stateless we onl use auth.etc
   // final AuthBase auth;
@@ -50,10 +49,11 @@ class _LanddindgPageState extends State<LanddindgPage> {
 
   @override
   Widget build(BuildContext context) {
-    final auth=Provider.of<AuthBase>(context,listen: false);// listen is true when we pass some obj taht state chnge
+    final auth = Provider.of<AuthBase>(context,
+        listen: false); // listen is true when we pass some obj taht state chnge
     // stream are sources for asyncronous data
-    return StreamBuilder<User>// that the steam will deals with users
-      (
+    return StreamBuilder<User> // that the steam will deals with users
+        (
       //initialData: widget.auth.authStateChanges(),// inital data optional if we pass the intial data no need to check the connection
       stream: auth.authStateChanges(),
       builder: (context, snapshot) {
@@ -65,16 +65,15 @@ class _LanddindgPageState extends State<LanddindgPage> {
           //
           final User user = snapshot.data;
           if (user == null) {
-            return SignInPage(
-              //auth: auth,
-             // onSignIn: _updateUser,
-            );
-          }
-          else {
+            return SignInPage.create(context);
+            //auth: auth,
+            // onSignIn: _updateUser,
+
+          } else {
             return HomePage(
-              //auth: auth,
-              // OnSignOut: () => _updateUser(null),
-            );
+                //auth: auth,
+                // OnSignOut: () => _updateUser(null),
+                );
           }
         }
         return Scaffold(
@@ -85,7 +84,7 @@ class _LanddindgPageState extends State<LanddindgPage> {
       },
     );
   }
-  // previous state
+// previous state
 //   if (_user == null) {
 //     return SignInPage(
 //       auth:widget.auth,
@@ -98,50 +97,3 @@ class _LanddindgPageState extends State<LanddindgPage> {
 //   ); // Temporary placeholder for homepage
 // }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
