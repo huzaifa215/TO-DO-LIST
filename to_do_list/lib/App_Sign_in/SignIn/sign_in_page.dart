@@ -11,16 +11,22 @@ import 'package:to_do_list/Services/Auth.dart';
 import 'file:///D:/FlutterApp/TO-DO-LIST/to_do_list/lib/App_Sign_in/SignIn/Sign_in_button.dart';
 
 class SignInPage extends StatelessWidget {
+  const SignInPage({Key key, @required this.bloc}) : super(key: key);
+  final SignInBloc bloc;
+
   //  const SignInPage({Key key,@required this.auth}) : super(key: key);
-  //  // due to stream we donot need  no call back inorder to sign in anosmusly
+  //  // due to stream we do not need  no call back inorder to sign in anonymously
   // // final void Function(User) onSignIn;
-  //
   //  final AuthBase auth;
 
   static Widget create(BuildContext context) {
     return Provider<SignInBloc>(
       create: (_) => SignInBloc(),
-      child: SignInPage(),
+      child: Consumer<SignInBloc>(
+        builder: (_, bloc, __) => SignInPage(
+          bloc: bloc,
+        ),
+      ),
     );
   }
 
@@ -39,7 +45,6 @@ class SignInPage extends StatelessWidget {
   }
 
   Future<void> _signInAnonymously(BuildContext context) async {
-    final bloc = Provider.of<SignInBloc>(context, listen: false);
     try {
       bloc.setIsLoading(true);
       final auth = Provider.of<AuthBase>(context, listen: false);
@@ -54,7 +59,6 @@ class SignInPage extends StatelessWidget {
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
-    final bloc = Provider.of<SignInBloc>(context, listen: false);
     try {
       bloc.setIsLoading(true);
       final auth = Provider.of<AuthBase>(context, listen: false);
@@ -69,7 +73,6 @@ class SignInPage extends StatelessWidget {
   }
 
   Future<void> _signInWithFacebook(BuildContext context) async {
-    final bloc = Provider.of<SignInBloc>(context, listen: false);
     try {
       bloc.setIsLoading(true);
       final auth = Provider.of<AuthBase>(context, listen: false);
