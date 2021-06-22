@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/email_sign_in_page.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/homepage.dart';
-import 'package:to_do_list/App_Sign_in/SignIn/sign_bloc.dart';
+import 'package:to_do_list/bloc/sign_bloc.dart';
 import 'package:to_do_list/App_Sign_in/SignIn/social_signin_button.dart';
 import 'package:to_do_list/Common_widgets/show_exception_alert_dialog.dart';
 import 'package:to_do_list/Services/Auth.dart';
